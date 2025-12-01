@@ -29,31 +29,55 @@ const servicesData = [
 
 export default function Services() {
   const containerRef = useRef(null);
+  const titleRef = useRef(null);
 
   useEffect(() => {
-    const cards = containerRef.current?.querySelectorAll(".service-card");
-    cards?.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.add("animate-slideUp");
-      }, index * 150);
-    });
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (entry.target === titleRef.current) {
+            entry.target.classList.add("animate-fadeInUp");
+            entry.target.classList.remove("opacity-0");
+          } else {
+            const cards = entry.target.querySelectorAll(".service-card");
+            cards?.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add("animate-slideUp");
+                card.classList.remove("opacity-0");
+              }, index * 100);
+            });
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (titleRef.current) observer.observe(titleRef.current);
+    if (containerRef.current) observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
   }, []);
 
   return (
     <section id="services" className="py-20 md:py-28 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0A1F44] mb-4">
+        <div ref={titleRef} className="">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0A1F44] mb-4 text-center">
             Our Core Services
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg">
+          <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg text-center">
             Reliable solutions that keep your production running efficiently.
           </p>
         </div>
 
         <div
           ref={containerRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch mt-16"
         >
           {servicesData.map((service) => (
             <ServiceCard key={service.id} service={service} />

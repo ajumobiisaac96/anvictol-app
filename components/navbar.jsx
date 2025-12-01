@@ -1,33 +1,33 @@
-﻿"use client"
+﻿"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [activeLink, setActiveLink] = useState("Home")
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState("Home");
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { label: "Home", href: "#hero" },
     { label: "About Us", href: "#about" },
     { label: "Our Services", href: "#services" },
     { label: "Contact Us", href: "#contact" },
-  ]
+  ];
 
   const handleLinkClick = (label) => {
-    setActiveLink(label)
-    setIsMenuOpen(false)
-  }
+    setActiveLink(label);
+    setIsMenuOpen(false);
+  };
 
   return (
     <nav
@@ -42,13 +42,15 @@ export default function Navbar() {
             <Image
               src="/logo.jpg"
               alt="Anvictol Logo"
-              width={40}
-              height={40}
+              width={48}
+              height={48}
               className="rounded-full"
             />
-            <div className="hidden sm:flex flex-col">
+            <div className="flex flex-col">
               <span className="font-bold text-sm text-[#0A1F44]">Anvictol</span>
-              <span className="text-xs text-gray-600">Integrated Services Ltd</span>
+              <span className="text-xs text-gray-600">
+                Integrated Services Ltd
+              </span>
             </div>
           </Link>
 
@@ -80,7 +82,11 @@ export default function Navbar() {
                 isMenuOpen ? "rotate-45 translate-y-2" : ""
               }`}
             />
-            <span className={`w-6 h-0.5 bg-[#0A1F44] transition-all duration-300 ${isMenuOpen ? "opacity-0" : ""}`} />
+            <span
+              className={`w-6 h-0.5 bg-[#0A1F44] transition-all duration-300 ${
+                isMenuOpen ? "opacity-0" : ""
+              }`}
+            />
             <span
               className={`w-6 h-0.5 bg-[#0A1F44] transition-all duration-300 ${
                 isMenuOpen ? "-rotate-45 -translate-y-2" : ""
@@ -110,5 +116,5 @@ export default function Navbar() {
         )}
       </div>
     </nav>
-  )
+  );
 }

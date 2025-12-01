@@ -68,7 +68,7 @@ export default function ContactForm({ onSuccess }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          to_email: "ajumobiisaac96@gmail.com",
+          to_email: "anvictolintegratedservices@gmail.com",
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
@@ -80,7 +80,9 @@ export default function ContactForm({ onSuccess }) {
         onSuccess();
       } else {
         const errorData = await response.json();
-        alert("Failed to send message. " + (errorData.error || "Please try again."));
+        alert(
+          "Failed to send message. " + (errorData.error || "Please try again.")
+        );
       }
     } catch (error) {
       console.error("Error sending email:", error);

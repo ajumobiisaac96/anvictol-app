@@ -5,11 +5,32 @@ import Link from "next/link";
 
 export default function Hero() {
   const heroRef = useRef(null);
+  const imageContainerRef = useRef(null);
 
   useEffect(() => {
     if (heroRef.current) {
       heroRef.current.classList.add("animate-fadeInUp");
     }
+
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: "0px 0px -100px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-fadeIn");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    if (imageContainerRef.current) {
+      observer.observe(imageContainerRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -22,6 +43,7 @@ export default function Hero() {
         {/* Mobile background image and overlay */}
         <div className="absolute inset-0 w-full h-full md:hidden">
           <div
+            ref={imageContainerRef}
             className="w-full h-full bg-center bg-cover"
             style={{
               backgroundImage: `url('/hero-image.jpg')`,
@@ -34,11 +56,12 @@ export default function Hero() {
         {/* Left Content - always left aligned */}
         <div className="flex-1 flex items-center justify-start max-w-2xl pl-4 md:pl-8 z-10">
           <div ref={heroRef} className="animate-fadeInUp">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 text-balance">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 text-balance max-w-lg md:max-w-xl">
               Keeping Industries Running, Safely and Efficiently
             </h1>
-            <p className="text-base md:text-lg text-gray-200 mb-8 leading-relaxed max-w-lg">
-              Expert maintenance, line operations, and conveyor cleaning for sustainable factory performance.
+            <p className="text-base md:text-lg text-gray-200 mb-8 leading-relaxed max-w-lg md:max-w-xl line-clamp-3">
+              Expert maintenance, line operations, and conveyor cleaning for
+              sustainable factory performance.
             </p>
             <Link href="#services">
               <button className="px-8 py-3 bg-white text-[#0A1F44] rounded-lg font-bold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95">
@@ -50,6 +73,7 @@ export default function Hero() {
         {/* Desktop Right Image */}
         <div className="flex-1 h-full relative hidden md:block">
           <div
+            ref={imageContainerRef}
             className="absolute right-0 top-0 h-full w-full bg-center bg-cover"
             style={{
               backgroundImage: `url('/hero-image.jpg')`,

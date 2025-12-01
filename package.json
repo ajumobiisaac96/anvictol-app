@@ -64,7 +64,9 @@
     "tailwindcss-animate": "^1.0.7",
     "toastify": "^2.0.1",
     "vaul": "^1.1.2",
-    "zod": "3.25.76"
+    "zod": "3.25.76",
+    "buffer": "6.0.3",
+    "ai": "5.0.104"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
